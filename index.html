@@ -111,12 +111,11 @@
                     body: JSON.stringify({ message: message })
                 });
 
-                const data = await response.json();
-
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
+                const data = await response.json();
                 const botResponse = data.message;
                 addMessageToChat('MindSafe', botResponse);
             } catch (error) {
@@ -124,8 +123,9 @@
                 addMessageToChat('MindSafe', `Error: ${error.message}`);
             }
         }
+
         
-        addMessageToChat('MindSafe', '¡Hola! Soy MindSafe, tu asistente para ayudarte con la adicción a las redes sociales. ¿En qué puedo ayudarte hoy?');
+        //addMessageToChat('MindSafe', '¡Hola! Soy MindSafe, tu asistente para ayudarte con la adicción a las redes sociales. ¿En qué puedo ayudarte hoy?');
     </script>
 </body>
 </html>
