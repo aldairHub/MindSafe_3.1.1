@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindSafe</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #e6e6e6;
+        }
+        #chat-container {
+            border: 1px solid #DBDBDB;
+            padding: 20px;
+            height: 400px;
+            overflow-y: scroll;
+            background-color: #FFFFFF;
+            border-radius: 8px;
+        }
+        #user-input {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #DBDBDB;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        #send-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #145202;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .message {
+            max-width: 65%;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 22px;
+            position: relative;
+            display: inline-block;
+            clear: both;
+            font-size: 14px;
+        }
+        .user-message {
+            background-color: #145202;
+            color: white;
+            float: right;
+        }
+        .bot-message {
+            background-color: #F1F1F1;
+            color: #262626;
+            float: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>MindSafe - Tu chatbot de ayuda</h1>
+    <div id="chat-container"></div>
+    <input type="text" id="user-input" placeholder="Escribe tu mensaje aquí...">
+    <button id="send-button">Enviar</button>
+
+    <script>
+        const chatContainer = document.getElementById('chat-container');
+        const userInput = document.getElementById('user-input');
+        const sendButton = document.getElementById('send-button');
+
+        sendButton.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        function sendMessage() {
+            const message = userInput.value.trim();
+            if (message) {
+                addMessageToChat('Usuario', message);
+                getBotResponse(message);
+                userInput.value = '';
+            }
+        }
+
+        function addMessageToChat(sender, message) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message');
+            messageElement.classList.add(sender === 'Usuario' ? 'user-message' : 'bot-message');
+            messageElement.textContent = message;
+            chatContainer.appendChild(messageElement);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        async function getBotResponse(message) {
+            const apiKey = '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';
+            const apiUrl = 'https://api.openai.com/v1/chat/completions';
+
+            try {
+                console.log('Sending request to OpenAI API...');
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: 'gpt-3.5-turbo',
+                        messages: [
+                            {role: 'system', content: 'Eres un asistente útil que ayuda a jóvenes con adicción a las redes sociales.'},
+                            {role: 'user', content: message}
+                        ]
+                    })
+                });
+
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
+
+                const data = await response.json();
+                console.log('API response:', data);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const botResponse = data.choices[0].message.content;
+                addMessageToChat('MindSafe', botResponse);
+            } catch (error) {
+                console.error('Error details:', error);
+                addMessageToChat('MindSafe', `Error: ${error.message}`);
+            }
+        }
+        
+        addMessageToChat('MindSafe', '¡Hola! Soy MindSafe, tu asistente para ayudarte con la adicción a las redes sociales. ¿En qué puedo ayudarte hoy?');
+    </script>
+</body>
+</html>
