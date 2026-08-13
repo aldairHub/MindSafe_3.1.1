@@ -57,12 +57,4 @@ Si deseas realizar cambios:
 
 Para cambios importantes, se recomienda abrir primero un **Issue** para discutir la propuesta.
 
-## 📜 Licencia
 
-Este proyecto está bajo la licencia **MIT**.
-
-Puedes utilizarlo, modificarlo y distribuirlo libremente de acuerdo con los términos de dicha licencia.
-
----
-
-⭐ Si el proyecto te resulta útil, ¡considera darle una estrella al repositorio!
