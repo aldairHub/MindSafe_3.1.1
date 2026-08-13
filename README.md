@@ -40,7 +40,7 @@ Abre el archivo `index.html` directamente en tu navegador.
 
 ## 🌐 Demo en línea
 
-Puedes probar la aplicación directamente desde Vercel:
+Puedes probar la aplicación directamente desde Vercel (API actualmente desactualizada):
 
 👉 **[MindSafe 3.1.1](https://mind-safe-3-1-1.vercel.app/)**
 
